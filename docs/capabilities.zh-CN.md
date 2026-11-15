@@ -1,6 +1,22 @@
 # 公测能力与验收范围
 
-除单列beta.2证据外，以下历史现场证据来自本机此前0.5.x游戏桥；0.6.0-beta.2便携包的构建、模拟检查和新安装闭环另行记录，不能混为同一证据。
+## beta.3 工坊直连实测 · Direct MCP test
+
+待发布的文字版 DLL、清单和配套工坊文件通过了游戏官方加载器。日志显示 `running=True`、`trust=Updated`，仅声明 `network`。测试时将同一套文件装在本地 Mods 目录。发行 DLL 的 SHA256 为 `DB0495926DEA7BE351A1AD9E2143C5FE95D82B3D9A7793A8A60BED29A85C0DF1`。
+
+Terra 仅用官方 MCP SDK 经 HTTP 发现 15 个工具，从主菜单载入 16 号副本。资料未关时，打开电话的请求被拒绝；读完并关闭名片和档案箱后，手拨 8376 接通助手。升级目录的选中项从空变为“水资源交易”（费用 600），滚动位置从 1 到 0.300000072 再回到 1，关闭目录后电话也已关闭。整个流程没有启动 Python 桥、购买或跨日，最终为第 43 天早晨、现金 700。
+
+The release DLL and Workshop manifest were loaded from the local Mods folder and tested through the official MCP SDK. All 15 tools were discovered. The test loaded slot 16 over HTTP, read and closed the card, dialed Joe’s assistant, selected Water Trader (600) and scrolled down and back. It ended on day 43 with 700 credits. No Python companion was run.
+
+## 电话与升级目录
+
+16 号副本第 43 天，测试用游戏内电话手动拨出 **8376**，接听者为「乔·王尔德的助手」。名片上的号码印在 `card_wild` 图像中，原生文字字段只提供姓名和「随时为您效劳」。数字来自玩家截图核对后的转录，只有读到匹配的名片才提供；返回的来源标签为 `artwork_transcription`。未识别的名片保留未知。已验证关闭名片与档案箱后仍能从本局已读记录取号。
+
+通过电话对话打开目录后，当天可见「水资源交易」费用 600，「水产养殖」费用 800 且前置为水资源交易。该次浏览使用测试副本，现金为 700，全程未购买升级。这个结果来自 stdio 实机测试。
+
+The digits **8376** are printed on Joe’s card artwork. The card’s native text supplies the name and tagline. For this verified artwork the tool returns a player-checked transcription marked `artwork_transcription`. A live stdio test on day 43 confirmed that the card and archive closed, the number remained available, the assistant answered a manual call, and the upgrade catalog opened. The test did not buy an upgrade.
+
+以下表格记录早期版本积累的实机证据和仍待测试的分支。本页另列 beta.2 与 0.6.0-beta.3 的具体实测范围。
 
 | 能力 | 已有证据 | 本版仍需公测 |
 | --- | --- | --- |

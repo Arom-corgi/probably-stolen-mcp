@@ -1,20 +1,28 @@
 # 星际掌柜｜深空当铺 MCP
 
-版本：0.6.0-beta.2。项目：https://github.com/Arom-corgi/probably-stolen-mcp。反馈：https://github.com/Arom-corgi/probably-stolen-mcp/issues。
+版本：0.6.0-beta.3。项目：https://github.com/Arom-corgi/probably-stolen-mcp。反馈：https://github.com/Arom-corgi/probably-stolen-mcp/issues。
 
-游戏模组读取店里的商品、交易和客人，配套服务把这些信息以文字交给你的 AI。两者安装在运行游戏的同一台 Windows 电脑上。支持启动本地 stdio MCP 服务的 AI 客户端都可以接入，无需安装 DeepSeek Harness 插件。
+游戏模组读取店里的商品、交易和客人，将结果以文字交给你自己的 AI 客户端。游戏和 AI 客户端在同一台电脑运行时可以直接连接。
 
 ## 安装（Windows）
 
-1. **游戏模组二选一**。在 Steam 订阅，或从同版 GitHub Release 下载文件名含 `mod-windows` 的 ZIP，解压到游戏目录下的 `Mods/DeepSeekBridge/`，让 `manifest.xml` 直接位于该文件夹内。任选一种后，在游戏模组菜单启用 AI MCP Gameplay Bridge 并重启。本地同 ID 模组会被优先加载。[Steam 创意工坊](https://steamcommunity.com/sharedfiles/filedetails/?id=3840057532)
-2. **想让 AI 接手时**，两种安装方式都要从 https://github.com/Arom-corgi/probably-stolen-mcp/releases/tag/v0.6.0-beta.2 下载同版本的 Python 桥接程序（文件名含 `client-windows`），解压到游戏和工坊目录之外。只想手动游玩时可以停在第 1 步。
-3. 安装Python 3.11+（本包在Python 3.12测试，无需pip依赖）。双击 `install-client.cmd`，或PowerShell运行 `configure-client.ps1`。它自动找Python，将精选客户端文件校验后复制到 `%LOCALAPPDATA%/PawnshopHarnessMCP/client`，状态放在旁边的`data`目录。
-4. 打开安装目录里的 `mcp-config.json`。在你的 AI 客户端添加名为 `pawnshop` 的本地 stdio 服务，填写其中的 `command` 和 `args`，或使用客户端的 JSON 导入功能。使用 DeepSeek Harness 的玩家也可沿用安装器对已有 Desktop/Web 配置的自动设置。希望只生成通用配置时，可运行 `configure-client.ps1 -NoHarness`。
-5. 在MCP客户端重连，先调用`game_status`核对已连接、模组版本与游戏版本，再读`game_actions`。测试用自己的副本存档；游戏决定实际结果及自动保存。
+1. **游戏模组二选一**。在 Steam 订阅，或从同版 GitHub Release 下载文件名含 `mod-windows` 的 ZIP，解压到游戏目录下的 `Mods/DeepSeekBridge/`，让 `manifest.xml` 直接位于该文件夹内。任选一种后，在游戏模组菜单启用 星际掌柜｜深空当铺 MCP 并重启。本地同 ID 模组会被优先加载。[Steam 创意工坊](https://steamcommunity.com/sharedfiles/filedetails/?id=3840057532)
+2. **连接游戏内 MCP**。确认游戏提示的网络权限。在本地 AI 客户端添加名为 `pawnshop` 的服务，传输选 **Streamable HTTP**，填入 `http://127.0.0.1:20873/mcp`。保存后，保持游戏开着。使用直接连接无需安装 Python 或下载桥接程序。
+3. 调用 `game_status` 核对连接和模组版本，再读 `game_actions`。要实际交易或过夜时，用自己的存档副本测试。AI 客户端和模型由玩家自行提供。云端 AI 客户端需有能访问本机的连接器。
+
+**English.** Subscribe on [Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3840057532), enable **星际掌柜｜深空当铺 MCP**, approve the network capability and restart the game. In an AI client on the same PC, add a **Streamable HTTP** server at `http://127.0.0.1:20873/mcp`. The Workshop subscription installs the game-side server. Bring your own AI client and model. No Python or companion download is needed for this connection.
+
+游戏提示的“访问互联网”权限用于在 `127.0.0.1:20873` 接收同机 AI 客户端的请求。本版模组不会主动连接模型提供商或上传存档。你也可以校验安装的 DLL，并让 AI 审查它的反编译代码。[权限说明、SHA256 与审查步骤 / Permissions, checksum and AI review](https://github.com/Arom-corgi/probably-stolen-mcp/blob/master/docs/privacy.zh-CN.md)
+
+### 可选的 stdio 连接
+
+仅支持本地 stdio 的客户端或需要外部 SQLite 记事的玩家，可以从 https://github.com/Arom-corgi/probably-stolen-mcp/releases/tag/v0.6.0-beta.3 下载同版配套程序（文件名含 `client-windows`）。安装 Python 3.11 或更新版本，将 ZIP 解压到游戏目录外，双击 `install-client.cmd`。安装目录默认为 `%LOCALAPPDATA%/PawnshopHarnessMCP/client`。在 AI 客户端中使用生成的 `mcp-config.json` 的 `command` 和 `args`。使用 DeepSeek Harness 时还可沿用安装器对已有 Desktop/Web 配置的自动设置。两种传输可在主机中择一启用，避免给模型两套同名工具。
 
 自检：在外部客户端目录运行 `python -B launcher.py --self-test`。只跑模拟stdio协议，不操作真实游戏。
 
 ## 日常使用
+
+连接后先查看客户端列出的工具。工坊直连提供当下游戏状态、物品、来客、可用动作以及执行回执。`game_capabilities` 列出直连版覆盖范围。下面提到的长期 SQLite 记事、跨次游戏知识库和 `game_strategy` 聚合建议属于可选 stdio 版本。
 
 先`game_status`和`game_actions`，只按本帧绑定`game_do`，每次写入后重新观察。旧session/revision必须拒绝；unknown不是失败证明，不能换请求ID盲重试。人工接管时停止MCP客户端调度；桥本身不会自行开始下一步。
 
@@ -26,7 +34,7 @@
 
 ## 兼容与边界
 
-本机研究/历史实测对象为Windows Steam正式本体100-Rev13，旧API报告0.46D。其它游戏更新、平台、职业及Mod组合未验证。beta.2冻结DLL已完成下列原生改造体事件现场测试；其它功能与环境仍需公测，不把单分支测试当成全覆盖。默认文字版只用游戏自带ModData文件API，不含屏幕图像能力。
+本机研究/历史实测对象为Windows Steam正式本体100-Rev13，旧API报告0.46D。其它游戏更新、平台、职业及Mod组合未验证。beta.2冻结DLL已完成下列原生改造体事件现场测试；其它功能与环境仍需公测，不把单分支测试当成全覆盖。工坊文字版使用游戏提供的 ModData 文件 API，并在回环地址提供 HTTP MCP 服务。它不采集屏幕图像。仍使用 beta.2 的玩家应从该版本发布页下载匹配的 stdio 配套程序。
 
 `CAPABILITIES.zh-CN.md`区分已有现场证据、本地回归和待测内容。没有通关或周日买房保证。客户端、原生模组与游戏版本不匹配时先核对版本和路径，勿通过绕过游戏扫描或反复点击处理。
 
