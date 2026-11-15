@@ -1,0 +1,30 @@
+name: 报告公测 BUG
+description: 记录一次安装、读状态或游戏操作问题
+title: '[BUG] '
+body:
+  - type: input
+    id: versions
+    attributes:
+      label: 使用的版本
+      description: 请填写游戏版本、客户端 ZIP 版本、game_status 返回的模组版本。安装或连接问题也请写 Windows 和 Python 版本。
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: 怎样重现
+      description: 当时打开了哪个窗口、正在做什么？请写出最短的操作顺序。若涉及存档，写游戏天数即可。
+    validations:
+      required: true
+  - type: textarea
+    id: result
+    attributes:
+      label: 预期结果与实际结果
+      description: 涉及交易或移动时，前后的现金、件数或物品位置尤其有用。
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: 可选补充
+      description: 可贴相关工具名、脱敏回执或一张截图。请移除 API 密钥、账号信息和私人路径，并保留你的原始存档在本机。
