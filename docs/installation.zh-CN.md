@@ -1,15 +1,15 @@
-# 深空当铺 · AI MCP 经营桥（公开测试）
+# 星际掌柜｜深空当铺 MCP
 
-版本：0.6.0-beta.2。项目：https://github.com/Arom-corgi/pawnshop-harness-mcp。反馈：https://github.com/Arom-corgi/pawnshop-harness-mcp/issues。
+版本：0.6.0-beta.2。项目：https://github.com/Arom-corgi/probably-stolen-mcp。反馈：https://github.com/Arom-corgi/probably-stolen-mcp/issues。
 
-这是本机文字MCP桥，需要分别安装游戏模组和这个外部客户端。没有模型、API额度、直播、自动无人值守循环或保证盈利功能。支持任何能启动本地stdio MCP的客户端；使用DeepSeek Harness时安装器可配置已存在的Desktop/Web配置。
+游戏模组读取店里的商品、交易和客人，配套服务把这些信息以文字交给你的 AI。两者安装在运行游戏的同一台 Windows 电脑上。支持启动本地 stdio MCP 服务的 AI 客户端都可以接入，无需安装 DeepSeek Harness 插件。
 
 ## 安装（Windows）
 
-1. 在Steam订阅工坊条目，等下载完成，在游戏Mods页启用并按游戏要求重启。只保留本桥的一份；本地Mods里的同ID副本会优先于工坊，不会自动切换到新版本。
-2. 从固定版本发布页 https://github.com/Arom-corgi/pawnshop-harness-mcp/releases/tag/v0.6.0-beta.2 下载 `pawnshop-harness-client-windows.zip`。解压到游戏和工坊目录之外。
+1. **游戏模组二选一**。在 Steam 订阅，或从同版 GitHub Release 下载文件名含 `mod-windows` 的 ZIP，解压到游戏目录下的 `Mods/DeepSeekBridge/`，让 `manifest.xml` 直接位于该文件夹内。任选一种后，在游戏模组菜单启用 AI MCP Gameplay Bridge 并重启。本地同 ID 模组会被优先加载。[Steam 创意工坊](https://steamcommunity.com/sharedfiles/filedetails/?id=3840057532)
+2. **想让 AI 接手时**，两种安装方式都要从 https://github.com/Arom-corgi/probably-stolen-mcp/releases/tag/v0.6.0-beta.2 下载同版本的 Python 桥接程序（文件名含 `client-windows`），解压到游戏和工坊目录之外。只想手动游玩时可以停在第 1 步。
 3. 安装Python 3.11+（本包在Python 3.12测试，无需pip依赖）。双击 `install-client.cmd`，或PowerShell运行 `configure-client.ps1`。它自动找Python，将精选客户端文件校验后复制到 `%LOCALAPPDATA%/PawnshopHarnessMCP/client`，状态放在旁边的`data`目录。
-4. 安装器保留并备份已存在的DeepSeek Harness配置，只加独立pawnshop条目；没有Harness时用生成的`mcp-config.json`导入自己的MCP客户端。它不会配置模型账号或API密钥。预览可运行 `configure-client.ps1 -Preview`，只生成通用配置可加`-NoHarness`。
+4. 打开安装目录里的 `mcp-config.json`。在你的 AI 客户端添加名为 `pawnshop` 的本地 stdio 服务，填写其中的 `command` 和 `args`，或使用客户端的 JSON 导入功能。使用 DeepSeek Harness 的玩家也可沿用安装器对已有 Desktop/Web 配置的自动设置。希望只生成通用配置时，可运行 `configure-client.ps1 -NoHarness`。
 5. 在MCP客户端重连，先调用`game_status`核对已连接、模组版本与游戏版本，再读`game_actions`。测试用自己的副本存档；游戏决定实际结果及自动保存。
 
 自检：在外部客户端目录运行 `python -B launcher.py --self-test`。只跑模拟stdio协议，不操作真实游戏。
