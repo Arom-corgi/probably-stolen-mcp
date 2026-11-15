@@ -4,6 +4,8 @@
 
 支持启动本地 **stdio MCP** 服务的 AI 客户端都可以接入，无需安装 DeepSeek Harness 插件。配套下载包里是 Python 桥接程序，由你选的 AI 客户端启动。只订阅模组也可以照常手动玩，AI 会在客户端连上并发出操作后才接手。
 
+**当前公开版 beta.2** 仍需要配套桥接程序才能让 AI 操作。游戏内直接提供 HTTP MCP 的版本正在开发。MCP 也不包含模型或模型额度。今后的直连版仍需要玩家在支持 Streamable HTTP 的本地 AI 客户端中添加一次服务地址。云端客户端需要能访问玩家电脑的连接器。
+
 ## 开始公测
 
 **安装游戏模组，二选一。**
@@ -18,6 +20,8 @@
 ## English
 
 **Star Shopkeeper** lets an AI read prices, talk to customers and run your shop in *Probably Stolen*.
+
+**The public beta.2 release requires the companion bridge for AI control.** An in-game HTTP MCP server is in development. Bring your own AI client and model access. With the direct connection, you will still add the server URL once in a local AI client that supports Streamable HTTP. A cloud-hosted client needs a connector on your PC.
 
 **Choose one way to install the game mod.**
 
