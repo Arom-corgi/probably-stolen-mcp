@@ -1,13 +1,13 @@
 # 深空当铺 · AI MCP 经营桥（公开测试）
 
-版本：0.6.0-beta.1。项目：https://github.com/Arom-corgi/pawnshop-harness-mcp。反馈：https://github.com/Arom-corgi/pawnshop-harness-mcp/issues。
+版本：0.6.0-beta.2。项目：https://github.com/Arom-corgi/pawnshop-harness-mcp。反馈：https://github.com/Arom-corgi/pawnshop-harness-mcp/issues。
 
 这是本机文字MCP桥，需要分别安装游戏模组和这个外部客户端。没有模型、API额度、直播、自动无人值守循环或保证盈利功能。支持任何能启动本地stdio MCP的客户端；使用DeepSeek Harness时安装器可配置已存在的Desktop/Web配置。
 
 ## 安装（Windows）
 
 1. 在Steam订阅工坊条目，等下载完成，在游戏Mods页启用并按游戏要求重启。只保留本桥的一份；本地Mods里的同ID副本会优先于工坊，不会自动切换到新版本。
-2. 从固定版本发布页 https://github.com/Arom-corgi/pawnshop-harness-mcp/releases/tag/v0.6.0-beta.1 下载 `pawnshop-harness-client-windows.zip`。解压到游戏和工坊目录之外。
+2. 从固定版本发布页 https://github.com/Arom-corgi/pawnshop-harness-mcp/releases/tag/v0.6.0-beta.2 下载 `pawnshop-harness-client-windows.zip`。解压到游戏和工坊目录之外。
 3. 安装Python 3.11+（本包在Python 3.12测试，无需pip依赖）。双击 `install-client.cmd`，或PowerShell运行 `configure-client.ps1`。它自动找Python，将精选客户端文件校验后复制到 `%LOCALAPPDATA%/PawnshopHarnessMCP/client`，状态放在旁边的`data`目录。
 4. 安装器保留并备份已存在的DeepSeek Harness配置，只加独立pawnshop条目；没有Harness时用生成的`mcp-config.json`导入自己的MCP客户端。它不会配置模型账号或API密钥。预览可运行 `configure-client.ps1 -Preview`，只生成通用配置可加`-NoHarness`。
 5. 在MCP客户端重连，先调用`game_status`核对已连接、模组版本与游戏版本，再读`game_actions`。测试用自己的副本存档；游戏决定实际结果及自动保存。
@@ -26,8 +26,15 @@
 
 ## 兼容与边界
 
-本机研究/历史实测对象为Windows Steam正式本体100-Rev13，旧API报告0.46D。其它游戏更新、平台、职业及Mod组合未验证。此公开发行DLL还需要在游戏Mods页扫描并完成公测，不把编译、模拟或历史版本的实测当成当前发行全覆盖。默认文字版只用游戏自带ModData文件API，不含屏幕图像能力。
+本机研究/历史实测对象为Windows Steam正式本体100-Rev13，旧API报告0.46D。其它游戏更新、平台、职业及Mod组合未验证。beta.2冻结DLL已完成下列原生改造体事件现场测试；其它功能与环境仍需公测，不把单分支测试当成全覆盖。默认文字版只用游戏自带ModData文件API，不含屏幕图像能力。
 
 `CAPABILITIES.zh-CN.md`区分已有现场证据、本地回归和待测内容。没有通关或周日买房保证。客户端、原生模组与游戏版本不匹配时先核对版本和路径，勿通过绕过游戏扫描或反复点击处理。
 
 卸载：移除MCP配置中的独立pawnshop条目，并在游戏Mods页取消订阅/停用。外部客户端与data目录独立保留，按自己需要备份或删除；安装器不删存档。
+
+
+## beta.2 当前原生改造体事件
+
+已实测冻结DLL SHA256：`42A82580012F53D4C32409725B4AA222DFB3AF9432BEF81886C11A2E02C33C21`。16号副本第41天第二时间线visit15：外显“小偷”、内部aug_material、原生is_aug=true、tier=2、未扫描；take→ready→confirm后原生自动收起，安保原文“看来这确实是个改造体”。实际OnGoodKill生成sec_slip2587，报告原文记129信用点已入账、改造体被消灭。无需对白补丁。此证据只覆盖该次原生分支，其它分支仍待公测。
+
+联合路线（尚未实测）：适合出售且当前顾客预算已知时，可先选货成交，再处理该次原生事件。为避免花光预算后客人离开，选原生整单报价严格小于当前剩余预算的组合并留正余额（预算100时80可，100不可）；报价或预算未知、无法留余额则跳过此交易，不强求卖货。按实际现金、离柜实例和回读预算记账；成交后重新读取同一session/visit且原生is_aug仍true、当帧绑定有效才可继续事件。客人离开即结束，禁止把旧绑定用于下一人。这是此联合路线的策略，不限制普通买家的正常成交。
